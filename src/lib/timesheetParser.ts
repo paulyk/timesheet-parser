@@ -1,16 +1,5 @@
-export interface Timesheet {
-    year: number;
-    month: number;
-    timeEntries: TimeEntry[];
-}
+import type { Timesheet, TimeEntry } from "./types";
 
-export interface TimeEntry {
-    date: string;
-    startTime: string;
-    endTime: string;
-    totalTime: number;
-    workItems: string[];
-}
 
 export function parseTimesheetEntries(rawString: string): Timesheet {
     const lines = rawString.split('\n').filter(line => line.trim().length > 0);

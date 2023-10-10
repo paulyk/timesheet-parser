@@ -1,6 +1,8 @@
 <script lang="ts">
 	import DataTable from '$lib/DataTable.svelte';
-	import type { Timesheet } from '$lib/timesheetParser';
+	import { exportTimeSheetToXlsx } from '$lib/exportTimesheetToXlsx';
+	import type { Timesheet } from '$lib/types';
+	
 	import ParseTimeheet from '../lib/ParseTimeheet.svelte';
 
 	let timehseet: Timesheet;
@@ -14,6 +16,10 @@
 			...entry
 		};
 	});
+
+	function handleExport() {
+		exportTimeSheetToXlsx(timehseet, `timesheet_${timehseet.year}_${timehseet.month}.xlsx`)
+	}
 </script>
 
 <div class="stack">
@@ -23,6 +29,7 @@
 
 
 	{#if timehseet}
+		<button on:click={handleExport}>Export</button>
 		<DataTable
 			data={entries}
 			columns={[

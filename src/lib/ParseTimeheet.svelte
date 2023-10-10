@@ -2,7 +2,8 @@
 	import { createEventDispatcher } from 'svelte';
 	import DataTable from './DataTable.svelte';
 	import Flex from './Flex.svelte';
-	import { parseTimesheetEntries, type TimeEntry, type Timesheet } from './timesheetParser';
+	import { parseTimesheetEntries } from './timesheetParser';
+	import type { TimeEntry, Timesheet } from './types';
 
 	let value = '';
 	let timeSheet: Timesheet = {
@@ -27,12 +28,6 @@
 		};
 	};
 
-	$: entries = timeSheet.timeEntries.map((entry: TimeEntry) => {
-		return {
-			...entry,
-			description: entry.workItems.join('\n')
-		};
-	});
 </script>
 
 <div>
