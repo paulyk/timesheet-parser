@@ -8,7 +8,7 @@ export interface TimeEntry {
 
 export function parseTimesheetEntries(rawString: string): TimeEntry[] {
     const entries: TimeEntry[] = [];
-    const lines = rawString.split('\n');
+    const lines = rawString.split('\n').filter((line) => line.trim().length > 0);
 
     let currentDate = '';
     let currentWorkItems: string[] = [];
@@ -27,8 +27,8 @@ export function parseTimesheetEntries(rawString: string): TimeEntry[] {
 
     for (const line of lines) {
         // Check if the line starts with a date
-
-        const dateMatch = line.match(/^[# ]+(\d{4}-\d{2}-\d{2})\s+\((\d+(.\d+)?)\s+hr/);
+        
+        const dateMatch = line.match(/^[# ]+(\d{4}-\d{2}-\d{2})\s+\((\d+(.\d+)?)\s+(hr|hours)/);
         if (dateMatch) {
             // If we have a date and work items from previous lines, push them to the array
             if (currentDate && currentTime && currentWorkItems.length > 0) {
