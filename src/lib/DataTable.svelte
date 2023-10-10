@@ -1,31 +1,31 @@
 <script lang="ts">
-	import Enumerable from 'linq'
+	import Enumerable from 'linq';
 
-	type T = $$Generic
-	type TKey = keyof T
-	type TRender = 'string' | 'link' | 'number' | 'image' | 'boolean' | 'lines'
+	type T = $$Generic;
+	type TKey = keyof T;
+	type TRender = 'string' | 'link' | 'number' | 'image' | 'boolean' | 'array';
 	type TColumn = {
 		/***
 		 * property to display in the table cell
 		 */
-		value: TKey
+		value: TKey;
 		/***
 		 * property to use as link href
 		 */
-		href?: TKey
-		heading: string
-		type?: TRender
-	}
+		href?: TKey;
+		heading: string;
+		type?: TRender;
+	};
 
-	export let data: T[] = []
+	export let data: T[] = [];
 
-	export let columns: TColumn[] = []
+	export let columns: TColumn[] = [];
 
-	export let showHeadings = true
+	export let showHeadings = true;
 
 	// sorting
-	let sortKey: TKey
-	let sortASC = true
+	let sortKey: TKey;
+	let sortASC = true;
 
 	$: sortedData = sortASC
 		? Enumerable.from(data)
@@ -33,18 +33,18 @@
 				.toArray()
 		: Enumerable.from(data)
 				.orderByDescending((x: T) => x[sortKey])
-				.toArray()
+				.toArray();
 
 	function sort(key: TKey) {
 		if (sortKey === key) {
-			sortASC = !sortASC
+			sortASC = !sortASC;
 		} else {
-			sortKey = key
-			sortASC = true
+			sortKey = key;
+			sortASC = true;
 		}
 	}
 
-	export let style = ''
+	export let style = '';
 </script>
 
 <table {style}>
@@ -65,7 +65,6 @@
 				{#each columns as column}
 					{@const value = entry[column.value]}
 					{@const href = column.href ? entry[column.href] : ''}
-					{@const lines = value.split('\n')}
 
 					<td class:number={column.type === 'number'}>
 						{#if !column.type || column.type === 'string'}
@@ -76,9 +75,9 @@
 							<a {href}>{value}</a>
 						{:else if column.type === 'boolean'}
 							{value ? 'Yes' : 'No'}
-						{:else if column.type === 'lines'}
-							{#each lines as line}
-								<div>{line}</div>
+						{:else if column.type === 'array'}
+							{#each value as item}
+								<div>{item}</div>
 							{/each}
 						{/if}
 					</td>
