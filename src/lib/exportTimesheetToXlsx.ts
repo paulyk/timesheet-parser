@@ -6,8 +6,7 @@ export function exportTimeSheetToXlsx(timesheet: Timesheet, filename: string) {
     const wb = XLSX.utils.book_new();
 
     const wsData: any[][] = [];
-    wsData.push(['Month', timesheet.month]);
-    wsData.push(['Year', timesheet.year]);
+    wsData.push([`Timesheet for ${timesheet.year}-${timesheet.month.toString().padStart(2, '0')}`]);
     wsData.push([]); // Empty row for separation
     wsData.push(['Date', 'Start', 'End', 'Hours', 'Description']);
 
@@ -20,7 +19,7 @@ export function exportTimeSheetToXlsx(timesheet: Timesheet, filename: string) {
     }
 
     wsData.push([]); // Empty row for separation
-    wsData.push(['Total Hours', totalHours]);
+    wsData.push(['', '', 'Total Hours', totalHours]);
 
     const ws = XLSX.utils.aoa_to_sheet(wsData);
     XLSX.utils.book_append_sheet(wb, ws, 'Timesheet');

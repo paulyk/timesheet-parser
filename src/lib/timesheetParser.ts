@@ -3,6 +3,7 @@ import type { Timesheet, TimeEntry } from "./types";
 
 export function parseTimesheetEntries(rawString: string): Timesheet {
     const lines = rawString.split('\n').filter(line => line.trim().length > 0);
+    
     const timeEntries = extractTimeEntries(lines);
 
     const firstDate = extractFirstDate(lines);
@@ -41,7 +42,7 @@ function extractTimeEntries(lines: string[]): TimeEntry[] {
     if (currentDate && time && currentWorkItems.length > 0) {
         entries.push(createTimeEntry(currentDate, time, currentWorkItems));
     }
-    return entries;
+    return entries.sort((a, b) => a.date.localeCompare(b.date));
 }
 
 function createTimeEntry(date: string, time: string, workItems: string[]): TimeEntry {
